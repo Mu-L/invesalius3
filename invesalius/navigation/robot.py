@@ -58,6 +58,7 @@ class Robot:
 
         self.objective = RobotObjective.NONE
         self.target = None
+        self.target_marker_id = None
 
         # If tracker already has fiducials set, send them to the robot; this can happen, e.g.,
         # when a pre-existing state is loaded at start-up.
@@ -379,13 +380,16 @@ class Robot:
 
     def UnsetTarget(self, marker):
         self.target = None
+        self.target_marker_id = None
         Publisher.sendMessage("Neuronavigation to Robot: Unset target", robot_id=self.robot_id)
 
     def SetTarget(self, marker):
         # Set robot objective to NONE when a new target is selected. This prevents the robot from
         # automatically moving to the new target (which would be the case if robot objective was previously
         # set to TRACK_TARGET). Preventing the automatic moving makes robot movement more explicit and predictable.
-        self.SetObjective(RobotObjective.NONE)
+        if getattr(self, "target_marker_id", None) != marker.marker_uuid:
+            self.SetObjective(RobotObjective.NONE)
+            self.target_marker_id = marker.marker_uuid
 
         coord = marker.position + marker.orientation
 
