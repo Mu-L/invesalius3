@@ -660,7 +660,7 @@ class Controller:
 
     def CloseProject(self) -> None:
         Publisher.sendMessage("Enable style", style=const.STATE_DEFAULT)
-        Publisher.sendMessage("Stop navigation")
+        Publisher.sendMessage("Press start navigation button", pressed=False)
         Publisher.sendMessage("Hide content panel")
         Publisher.sendMessage("Close project data")
 

@@ -90,7 +90,7 @@ class Preferences(wx.Dialog):
         self.Layout()
         self.__bind_events()
 
-        Publisher.sendMessage("Stop navigation")
+        Publisher.sendMessage("Press start navigation button", pressed=False)
 
     def __bind_events(self):
         Publisher.subscribe(self.LoadPreferences, "Load Preferences")
@@ -2389,7 +2389,7 @@ class TrackerTab(wx.Panel):
             choice = None
 
         # Stop navigation to avoid tracker to be disconnected while navigating
-        Publisher.sendMessage("Stop navigation")
+        Publisher.sendMessage("Press start navigation button", pressed=False)
 
         self.tracker.DisconnectTracker()
         self.tracker.ResetTrackerFiducials()

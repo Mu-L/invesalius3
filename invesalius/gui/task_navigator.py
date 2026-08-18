@@ -2405,6 +2405,7 @@ class ControlPanel(wx.Panel):
     def __bind_events(self):
         Publisher.subscribe(self.OnStartNavigation, "Start navigation")
         Publisher.subscribe(self.OnStopNavigation, "Stop navigation")
+        Publisher.subscribe(self.PressStartNavigationButton, "Press start navigation button")
         Publisher.subscribe(self.OnCheckStatus, "Navigation status")
         Publisher.subscribe(self.SetTarget, "Set target")
         Publisher.subscribe(self.UnsetTarget, "Unset target")
@@ -2493,6 +2494,10 @@ class ControlPanel(wx.Panel):
 
             # Ensure that the target is sent to robot when navigation starts.
             self.robots.SendTargetToAll()
+
+    def PressStartNavigationButton(self, pressed):
+        self.btn_nav.SetValue(pressed)
+        self.OnStartNavigationButton(evt=None, btn_nav=self.btn_nav)
 
     def OnStartNavigationButton(self, evt, btn_nav):
         nav_id = btn_nav.GetValue()
